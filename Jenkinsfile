@@ -13,7 +13,7 @@ pipeline {
              
            }
        }
-       stage('hello main') {
+       stage('main') {
           when {
             branch "main"
           }
@@ -22,7 +22,7 @@ pipeline {
           
           }
        }
-       stage('hello main') {
+       stage('pre') {
           when {
             branch "pre-prod"
           }
