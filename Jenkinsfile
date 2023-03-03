@@ -22,7 +22,7 @@ pipeline {
           }
           steps {
              echo 'from dev'
-             echo ${version_release}
+             echo "${version_release}"
              sh"""docker build -t "${ecr_uri}/${repo_name}":"${version_release}"
              aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ecr_uri}
              docker push "${ecr_uri}/${repo_name}":"${version_release}"
