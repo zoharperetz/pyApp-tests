@@ -13,13 +13,13 @@ def get_data(values):
     data_obj = requests.get(f"http://api.weatherunlocked.com/api/forecast/{lat},{lon}?app_id={venv.app_id}&app_key={venv.app_key}")
     data_obj = data_obj.json()
     data_list = data_obj["Days"]
-    days_list = []   #array of dictionaries data about all 7 days/ len = 7
+    dayslist = []   #array of dictionaries data about all 7 days/ len = 7
     for item in data_list:
-       days_list.append(item)
+       dayslist.append(item)
        
     for i in range(0, 7):
-       print(f"day {i+1}: {days_list[i]['date']} {days_list[i]['temp_max_c']} {days_list[i]['temp_min_c']}")
-    return days_list 
+       print(f"day {i+1}: {dayslist[i]['date']} {dayslist[i]['temp_max_c']} {dayslist[i]['temp_min_c']}")
+    return dayslist 
 
 
 @app.route("/", methods=["POST","GET"])
