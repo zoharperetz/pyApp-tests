@@ -5,7 +5,7 @@ pipeline {
     environment{
         repo_name='python-app'
         ecr_uri='872444258103.dkr.ecr.us-east-1.amazonaws.com'
-        version_release = sh(script: "git describe --exact-match --tags $(git rev-parse HEAD)")
+        version_release = sh(script: "git describe --tags")
 
 
     }
