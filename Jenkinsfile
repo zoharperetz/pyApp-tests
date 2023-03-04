@@ -29,6 +29,17 @@ pipeline {
           
           }
        }
+       stage('test') {
+          when {
+            branch "development"
+          }
+          steps {
+             sh """docker run -dit --name pyApp "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}" 
+             docker exec -dit pyApp bash python3 testApp.py
+             """
+          
+          }
+       }
        
        stage('main') {
           when {
