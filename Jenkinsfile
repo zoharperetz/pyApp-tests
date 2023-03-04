@@ -22,9 +22,9 @@ pipeline {
           }
           steps {
              echo 'from dev'
-             sh"""docker build -t "${ecr_uri}/${repo_name}":"$(git rev-parse HEAD)-${BUILD_NUMBER}"
+             sh """docker build -t "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}" .
              aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ecr_uri}
-             docker push "${ecr_uri}/${repo_name}":"$(git rev-parse HEAD)-${BUILD_NUMBER}"
+             docker push "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}"
              """
           
           }
