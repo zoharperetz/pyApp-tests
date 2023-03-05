@@ -68,8 +68,8 @@ pipeline {
     }
     post {
           always { 
-            sh """docker rm -f $(docker ps -aq)
-            docker rmi -f $(docker images -aq)
+            sh """docker rm -f \$(docker ps -aq)
+            docker rmi -f \$(docker images -aq)
             """
             
         } 
