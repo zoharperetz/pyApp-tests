@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class TestWeatherApp(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Remote(command_executor="http://selenium:4444")
         self.driver.get("http://flask:5000")
 
     def tearDown(self):
