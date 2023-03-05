@@ -1,5 +1,4 @@
 import unittest
-#import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -15,8 +14,6 @@ class TestWeatherApp(unittest.TestCase):
         self.driver.quit()
 
     def test_home_page(self):
-        #response = requests.get("http://localhost:5000")
-        #assert response.status_code == 200
         input_field = self.driver.find_element(By.NAME, "City")
         input_field.send_keys("New York")
         self.driver.find_element(By.XPATH, "/html/body/center/form/label/p[2]/input").send_keys(Keys.ENTER)
