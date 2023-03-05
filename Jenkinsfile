@@ -46,10 +46,13 @@ pipeline {
             branch "pre-prod"
           }
           steps {
-             sh """docker-compose up -d
-             docker-compose exec selenium python3 testSelenium.py
+             withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', passwordVariable: 'password', usernameVariable: 'username')]) {
+             sh """docker login -u ${username} -p ${password}
              """
-     
+            }
+            sh """docker-compose up -d
+            docker-compose exec selenium python3 testSelenium.py
+            """
           }
        }
        stage('main') {
