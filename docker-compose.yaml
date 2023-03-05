@@ -4,7 +4,6 @@ services:
     build: 
       context: .
       network: host
-    user: "1000:1000"  
     ports:
       - "5000:5000"  
     environment:
@@ -18,7 +17,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-selenium
-    user: "1000:1000"
     depends_on:
       - flask
     environment:
