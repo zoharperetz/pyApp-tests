@@ -51,7 +51,7 @@ pipeline {
              """
             }
             sh """docker-compose up -d
-            docker-compose exec selenium python3 testSelenium.py
+            docker-compose exec -T selenium python3 testSelenium.py
             """
           }
        }
@@ -68,9 +68,8 @@ pipeline {
     }
     post {
           always { 
-            sh """docker stop pyApp
-            docker rm pyApp
-            docker-compose down
+            sh """docker rm -f $(docker ps -aq)
+            docker rmi -f $(docker images -aq)
             """
             
         } 
