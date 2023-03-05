@@ -41,6 +41,15 @@ pipeline {
           }
        }
        
+       stage('staging-tests') {
+          when {
+            branch "pre-prod"
+          }
+          steps {
+             echo 'from pre'
+          
+          }
+       }
        stage('main') {
           when {
             branch "main"
@@ -52,5 +61,12 @@ pipeline {
        }
        
     }
+    post {
+          always { 
+            sh """docker stop pyApp
+            docker rm pyApp
+            """
+            
+        } 
     
 }
