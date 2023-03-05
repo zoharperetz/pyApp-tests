@@ -15,6 +15,7 @@ services:
       - app_network
   selenium:
     image: selenium/standalone-chrome-debug:3.141.59-zirconium
+    user: "1000:1000"
     depends_on:
       - flask
     environment:
