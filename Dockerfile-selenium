@@ -2,7 +2,7 @@ FROM selenium/standalone-chrome-debug:3.141.59-zirconium
 
 WORKDIR /app
 
-RUN sudo apt-get update && sudo apt-get install -y python3 python3-pip
+RUN sudo apt update && sudo apt install -y python3 python3-pip
 
 RUN pip3 install selenium
 
