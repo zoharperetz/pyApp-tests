@@ -1,10 +1,8 @@
-FROM selenium/node-chrome:4.0.0-rc-1-prerelease-20220224-alternate
+FROM selenium/standalone-chrome
 
 WORKDIR /app
 
-RUN addgroup appuser && \
-    adduser -G appuser -D appuser
-USER appuser
+USER ec2-user
 
 RUN apt-get update && apt-get install -y python3 python3-pip
 
