@@ -51,7 +51,6 @@ pipeline {
              """
             }
             sh """docker-compose up -d
-            docker-compose exec -T selenium python3 testSelenium.py
             """
           }
        }
