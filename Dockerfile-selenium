@@ -1,4 +1,4 @@
-FROM selenium/standalone-chrome-debug:3.141.59-zirconium
+FROM selenium/node-chrome:4.0.0-rc-1-prerelease-20220224
 
 WORKDIR /app
 
