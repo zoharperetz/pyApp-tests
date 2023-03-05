@@ -46,7 +46,10 @@ pipeline {
             branch "pre-prod"
           }
           steps {
-             
+          
+             sh """docker-compose up -d
+             docker-compose exec selenium python3 testSelenium.py
+             """
           
           }
        }
@@ -55,9 +58,7 @@ pipeline {
             branch "main"
           }
           steps {
-             sh """docker-compose up -d
-             docker-compose exec selenium python3 testSelenium.py
-             """
+             echo "hello from main"
           
           }
        }
