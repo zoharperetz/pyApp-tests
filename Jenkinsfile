@@ -50,7 +50,8 @@ pipeline {
              sh """docker login -u ${username} -p ${password}
              """
             }
-            sh """docker-compose up -d
+            sh """docker-compose build --no-cache
+            docker-compose up -d
             """
           }
        }
