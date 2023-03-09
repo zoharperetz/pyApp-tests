@@ -34,6 +34,10 @@ pipeline {
             branch "development"
           }
           steps {
+             withCredentials([usernamePassword(credentialsId: 'dockerhub-cred', passwordVariable: 'password', usernameVariable: 'username')]) {
+             sh """docker login -u ${username} -p ${password}
+             """
+            }
              sh """docker run -dit --name pyApp "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}" 
              docker exec -dit pyApp bash python3 testApp.py
              """

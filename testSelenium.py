@@ -2,13 +2,19 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class TestWeatherApp(unittest.TestCase):
     def setUp(self):
-        self.driver = webdriver.Remote(command_executor="http://selenium:4444")
-        self.driver.get("http://flask:5000")
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--disable-gpu')
+        options.binary_location = '/usr/bin/google-chrome-stable'
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, executable_path='/usr/local/bin/chromedriver')
+        self.driver.get("http://127.0.0.1:5000")
 
     def tearDown(self):
         self.driver.quit()
