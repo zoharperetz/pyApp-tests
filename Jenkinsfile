@@ -60,8 +60,8 @@ pipeline {
     }
     post {
           always { 
-            sh """docker stop /$(docker ps -aq)
-            docker rm docker stop /$(docker ps -aq)
+            sh """docker stop \$(docker ps -aq)
+            docker rm docker stop \$(docker ps -aq)
             """
             
         } 
