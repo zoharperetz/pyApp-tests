@@ -61,6 +61,16 @@ pipeline {
             """
           }
        }
+       stage('destroy-staging') {
+          when {
+            branch "pre-prod"
+          }
+          steps {
+            sh """cd tf-eks
+            terraform destroy
+            """
+          }
+       }
        stage('main') {
           when {
             branch "main"
