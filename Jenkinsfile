@@ -54,23 +54,10 @@ pipeline {
              sh """docker login -u ${username} -p ${password}
              """
             }
-            sh """cd tf-eks
-            terraform init
-            terraform plan -out=eksplan
-            terraform apply -auto-approve eksplan
-            """
+            
           }
        }
-       stage('destroy-staging') {
-          when {
-            branch "pre-prod"
-          }
-          steps {
-            sh """cd tf-eks
-            """
-            echo "terraform destroy"
-          }
-       }
+       
        stage('main') {
           when {
             branch "main"
