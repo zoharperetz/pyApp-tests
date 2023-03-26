@@ -54,8 +54,10 @@ pipeline {
              sh """docker login -u ${username} -p ${password}
              """
             }
-            sh """docker-compose build --no-cache
-            docker-compose up -d
+            sh """cd tf-eks
+            terraform init
+            terraform plan -out=eksplan
+            terraform apply -auto-approve eksplan
             """
           }
        }
