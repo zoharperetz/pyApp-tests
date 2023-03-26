@@ -67,8 +67,8 @@ pipeline {
           }
           steps {
             sh """cd tf-eks
-            terraform destroy
             """
+            echo "terraform destroy"
           }
        }
        stage('main') {
