@@ -30,7 +30,7 @@ pipeline {
         steps {
           script{
             sh"""git tag --contains HEAD"""
-            status_code=sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
+            status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
             echo "${status_code}"
             if ("${status_code}" == 0){
             
