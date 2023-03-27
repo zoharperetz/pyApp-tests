@@ -78,8 +78,8 @@ pipeline {
         always {
             // Clean workspace here
             cleanWs()
-            sh"""docker rm -vf $(docker ps -a -q)
-            docker system prune --force
+            sh(script: 'docker rm -vf $(docker ps -a -q)')
+            sh"""docker system prune --force
             """
         }
     }
