@@ -8,35 +8,26 @@ pipeline {
         VERSION_TAG=""
         
 
-    }
-    stages {
-       stage('clean') {
-           steps{
-              cleanWs()
-              sh"""docker system prune --force
-              """
-             
-           }
-       }
-       stage('build & tests') {
-          when {
+      }
+      stage('build & tests') {
+         when {
             branch "development"
-          }
-          steps {
+         }
+         steps {
              sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
              docker run -dit --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
              """
           
-          }
-       }
-       stage('versioning') {
-         when {
-            branch "development"
-          }
-         steps {
-           script{
+         }
+      }
+      stage('versioning') {
+        when {
+           branch "development"
+        }
+        steps {
+          script{
             status_code = sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
             if (${status_code} == 0){
             
@@ -45,22 +36,20 @@ pipeline {
              else{
                VERSION_TAG=${BUILD_NUMBER}
              }
-            }
-          }
-       }
-       
-       stage('push to ECR') {
-          when {
+           }
+        }
+     }
+     stage('push to ECR') {
+        when {
             branch "development"
-          }
-          steps {
-             sh"""aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_URI}
-             docker push "${ECR_URI}/${REPO_NAME}":"${VERSION_TAG}"
-             """
+        }
+        steps {
+           sh"""aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_URI}
+           docker push "${ECR_URI}/${REPO_NAME}":"${VERSION_TAG}"
+           """
              
-          
-          }
        }
+    }
        
        stage('staging-tests') {
           when {
@@ -72,16 +61,24 @@ pipeline {
 
           }
             
-       }
-       stage('deploy') {
+      }
+      stage('deploy') {
           when {
             branch "main"
           }
           steps {
              echo "hello from main"
           
-          }
-       }
+         }
+      }
+      stage('clean') {
+           steps{
+              cleanWs()
+              sh"""docker system prune --force
+              """
+             
+           }
+      }
        
     }
     
