@@ -72,15 +72,16 @@ pipeline {
           
          }
       }
-      stage('clean') {
-           steps{
-              cleanWs()
-              sh"""docker system prune --force
-              """
-             
-           }
-      }
        
    }
+   post {
+        always {
+            // Clean workspace here
+            cleanWs()
+            sh"""docker rm -vf $(docker ps -a -q)
+            docker system prune --force
+            """
+        }
+    }
     
 }
