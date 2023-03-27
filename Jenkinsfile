@@ -31,12 +31,13 @@ pipeline {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
             commit_hash=sh(script: 'git rev-parse HEAD', returnStdout: true)
+            tags= sh(script: 'git describe --tags $(git rev-list --tags --max-count=1)', returnStdout: true).trim()
             echo "${status_code}"
             if (status_code == 0){
             
                VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true)
                echo "${VERSION_TAG}"
-               echo "${commit_hash}"
+               echo "${tags}"
              }
              else{
                VERSION_TAG=${BUILD_NUMBER}
