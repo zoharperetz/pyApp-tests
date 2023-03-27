@@ -36,13 +36,16 @@ pipeline {
             branch "development"
           }
          steps {
-            if ( sh(script: 'git tag --contains HEAD', returnStatus: true) == 0 ){
+           script{
+            status_code = sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
+            if (${status_code} == 0){
             
-              VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
+               VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
              }
              else{
-              VERSION_TAG=${BUILD_NUMBER}
+               VERSION_TAG=${BUILD_NUMBER}
              }
+            }
           }
        }
        
