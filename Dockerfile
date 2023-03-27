@@ -1,5 +1,6 @@
 FROM python:3.8
 RUN groupadd -r mygroup && useradd -r -g mygroup myuser
+RUN chown -R myuser /home/myuser
 RUN mkdir app && chown -R myuser app
 USER myuser
 WORKDIR /app
