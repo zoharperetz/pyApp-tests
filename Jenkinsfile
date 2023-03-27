@@ -34,6 +34,7 @@ pipeline {
             if (status_code == 0){
             
                VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
+               echo "${VERSION_TAG}"
              }
              else{
                VERSION_TAG=${BUILD_NUMBER}
