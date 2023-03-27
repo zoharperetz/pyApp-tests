@@ -64,7 +64,8 @@ pipeline {
             branch "pre-prod"
           }
           steps {
-             kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${VERSION_TAG}" --namespace=staging
+             sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${VERSION_TAG}" --namespace=staging
+             """
 
           }
             
