@@ -29,8 +29,8 @@ pipeline {
         }
         steps {
           script{
-            status_code = sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
-            if (${status_code} == 0){
+            def status_code = sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
+            if (status_code == 0){
             
                VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
              }
