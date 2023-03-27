@@ -1,8 +1,8 @@
 FROM python:3.8
 RUN groupadd -r mygroup && useradd -r -g mygroup myuser
-WORKDIR /app
-RUN chown -R myuser app
+RUN mkdir app && chown -R myuser app
 USER myuser
+WORKDIR /app
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
 COPY . .
