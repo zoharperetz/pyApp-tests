@@ -3,37 +3,58 @@ pipeline {
   label 'build-agent'
 }
     environment{
-        repo_name='python-app'
-        ecr_uri='872444258103.dkr.ecr.us-east-1.amazonaws.com'
-        release_version=sh(script: "git tag --points-at ${env.GIT_COMMIT}", returnStdout: true).trim()
-
-
+        REPO_NAME='python-app'
+        ECR_URI='872444258103.dkr.ecr.us-east-1.amazonaws.com'
+        VERSION_TAG=""
+        
 
     }
     stages {
-       stage('build+tests') {
+       stage('clean') {
+           steps{
+              cleanWs()
+              sh"""docker system prune --force
+              """
+             
+           }
+       }
+       stage('build & tests') {
           when {
             branch "development"
           }
           steps {
-             echo 'from dev'
-             sh """docker build -t "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}" .
-             docker run -dit --name pyApp "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}" 
-             docker exec -dit pyApp bash python3 testApp.py
+             sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
+             docker run -dit --name weather-app "${ECR_URI}/${REPO_NAME}"
+             docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
-             echo "${release_version}"
              """
           
           }
        }
-       stage('push-to-ECR') {
+       stage('versioning') {
+         when {
+            branch "development"
+          }
+         steps {
+            if ( sh(script: 'git tag --contains HEAD', returnStatus: true) == 0 ){
+            
+              VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
+             }
+             else{
+              VERSION_TAG=${BUILD_NUMBER}
+             }
+          }
+       }
+       
+       stage('push to ECR') {
           when {
             branch "development"
           }
           steps {
-             sh """aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ecr_uri}
-             docker push "${ecr_uri}/${repo_name}":"${BUILD_NUMBER}"
+             sh"""aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_URI}
+             docker push "${ECR_URI}/${REPO_NAME}":"${VERSION_TAG}"
              """
+             
           
           }
        }
@@ -43,30 +64,22 @@ pipeline {
             branch "pre-prod"
           }
           steps {
-             echo 'from pre'
-          
+             kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}":"${VERSION_TAG}" --namespace=staging
+
           }
+            
        }
-       stage('main') {
+       
+       stage('deploy') {
           when {
             branch "main"
           }
           steps {
-             echo 'from main'
+             echo "hello from main"
           
           }
        }
        
     }
-    post {
-          always { 
-            script{
-               docker stop $(docker ps -aq)
-               docker rm $(docker ps -aq)
-            }
-            
-            
-        } 
     
- }
 }
