@@ -16,7 +16,7 @@ pipeline {
          }
          steps {
              sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
-             docker run -dit --name weather-app "${ECR_URI}/${REPO_NAME}"
+             docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
              """
