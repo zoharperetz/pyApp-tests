@@ -28,6 +28,7 @@ pipeline {
            branch "development"
         }
         steps {
+          script{
             sh"""git tag --contains HEAD"""
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true).trim()
             echo "${status_code}"
@@ -38,7 +39,7 @@ pipeline {
              else{
                VERSION_TAG=${BUILD_NUMBER}
              }
-           
+           }
         }
      }
      stage('push to ECR') {
