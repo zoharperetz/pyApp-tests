@@ -32,7 +32,7 @@ pipeline {
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
             if (status_code == 0){
             
-               VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true)
+               VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true).trim()
                echo "${VERSION_TAG}"
 
              }
