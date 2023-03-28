@@ -40,6 +40,8 @@ pipeline {
                VERSION_TAG=${BUILD_NUMBER}
                echo "${VERSION_TAG}"
              }
+             docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
+
            }
         }
      }
