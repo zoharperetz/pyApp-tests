@@ -40,7 +40,8 @@ pipeline {
                VERSION_TAG=${BUILD_NUMBER}
                echo "${VERSION_TAG}"
              }
-
+             sh"""           docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
+             """
            }
         }
      }
@@ -50,7 +51,6 @@ pipeline {
         }
         steps {
            sh"""aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR_URI}
-           docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}
            docker push "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
            """
              
