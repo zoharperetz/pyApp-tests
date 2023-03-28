@@ -30,9 +30,7 @@ pipeline {
         steps {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
-            commit_hash=sh(script: 'git rev-parse HEAD', returnStdout: true)
-            echo "${status_code}"
-            if (status_code != 0){
+            if (status_code == 0){
             
                VERSION_TAG=sh(script: 'git tag --contains HEAD', returnStdout: true)
                echo "${VERSION_TAG}"
