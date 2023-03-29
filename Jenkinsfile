@@ -9,24 +9,7 @@ pipeline {
 
     }
     stages{
-    
-      stage('build & tests') {
-         when {
-            branch "development"
-         }
-         steps {
-             sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
-             docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
-             docker exec -dit weather-app bash python3 testApp.py
-             python3 testSelenium.py
-             """
-          
-         }
-      }
       stage('versioning') {
-        when {
-           branch "development"
-        }
         steps {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
@@ -45,6 +28,20 @@ pipeline {
            }
         }
      }
+      stage('build & tests') {
+         when {
+            branch "development"
+         }
+         steps {
+             sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
+             docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
+             docker exec -dit weather-app bash python3 testApp.py
+             python3 testSelenium.py
+             """
+          
+         }
+      }
+      
      stage('push to ECR') {
         when {
             branch "development"
@@ -86,6 +83,18 @@ pipeline {
             sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
+        }
+        success {
+            script {
+                if (env.BRANCH_NAME == 'development') {
+                    sh"""git checkout pre-prod
+                    git cherry-pick ${GIT_COMMIT}
+                    git tag ${VERSION_TAG}
+                    git push origin --tags
+                    git push origin pre-prod
+                    """
+                }
+            }
         }
     }
     
