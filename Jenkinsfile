@@ -62,6 +62,7 @@ pipeline {
             branch "pre-prod"
           }
           steps {
+            script{
              echo "${params.VERSION}"
              dir('eks') {
              sh"""sed -i 's/VERSION_TAG/${params.VERSION}/g' weatherapp.yaml
@@ -76,6 +77,7 @@ pipeline {
              cat testSelenium.py
              python3 testSelenium.py
              """
+            }
           }
             
       }
