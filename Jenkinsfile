@@ -63,11 +63,13 @@ pipeline {
           }
           steps {
              echo "${params.VERSION}"
-             sh"""cd eks
-             sed -i 's/$VERSION_TAG/"${params.VERSION}"/g' weatherapp.yaml
+             dir('eks') {
+             sh"""sed -i 's/$VERSION_TAG/"${params.VERSION}"/g' weatherapp.yaml
+             cat weatherapp.yaml
              kubectl apply -f weatherapp.yaml --namespace=staging
              kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
+             }
 
           }
             
