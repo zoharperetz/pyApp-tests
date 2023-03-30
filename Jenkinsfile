@@ -90,7 +90,8 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
-                    build job: 'myorg/myrepo/staging', parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
+                    echo "${env.JOB_NAME.split('/')[0]}"
+                    build job: "${env.JOB_NAME.split('/')[0]}/staging", wait: true, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
                     
 
                 }
