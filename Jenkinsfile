@@ -95,8 +95,8 @@ pipeline {
    post {
         always {
             // Clean workspace here
-            //cleanWs()
-            //sh(script: 'docker rm -vf $(docker ps -a -q)')
+            cleanWs()
+            sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
         }
@@ -109,7 +109,7 @@ pipeline {
 
                 }
                 if (env.BRANCH_NAME == 'pre-prod') {
-                      sh 'pwd'
+                      sh "git checkout ${env.BRANCH_NAME}"
                       sh "git add ."
                       sh "git commit -m 'Commit message'"
                       sh "git push origin ${env.BRANCH_NAME}"
