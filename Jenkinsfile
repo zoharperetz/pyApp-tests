@@ -70,7 +70,7 @@ pipeline {
              kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
              }
-             sh"""sed -i 's#http://127.0.0.1:5000#http://"$(kubectl get svc weatherapp-service -n staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')"#g' testSelenium.py
+             sh"""sed -i 's#http://127.0.0.1:5000#http://$(kubectl get svc weatherapp-service -n staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')#g' testSelenium.py
              cat testSelenium.py
              python3 testSelenium.py
              """
