@@ -90,17 +90,8 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
-                    properties([
-          
-                      pipelineTriggers([
-                      [
-                        $class: 'jenkins.triggers.ReverseBuildTrigger',
-                        upstreamProjects: 'myorg/myrepo/development',
-                        threshold: hudson.model.Result.SUCCESS
-                      ]
-                    ]),
-                    [$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION_TAG}"]
-                   ])
+                    build job: 'myorg/myrepo/staging', parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
+                    
 
                 }
             }
