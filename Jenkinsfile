@@ -99,7 +99,7 @@ pipeline {
                         threshold: hudson.model.Result.SUCCESS
                       ]
                     ]),
-                    [$class: 'StringParameterValue', name: 'VERSION', value: ${VERSION_TAG}]
+                    [$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION_TAG}"]
                    ])
 
                 }
