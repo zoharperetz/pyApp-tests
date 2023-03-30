@@ -92,15 +92,7 @@ pipeline {
       }
        
    }
-   post {
-        always {
-            // Clean workspace here
-            cleanWs()
-            sh(script: 'docker rm -vf $(docker ps -a -q)')
-            sh"""docker system prune --force
-            """
-        }
-        
+   post {        
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
@@ -117,6 +109,13 @@ pipeline {
                 }
             }
         
+        }
+        always {
+            // Clean workspace here
+            cleanWs()
+            //sh(script: 'docker rm -vf $(docker ps -a -q)')
+            sh"""docker system prune --force
+            """
         }
     }
     
