@@ -90,7 +90,7 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
-                    build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
+                    build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: false, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
                     
 
                 }
