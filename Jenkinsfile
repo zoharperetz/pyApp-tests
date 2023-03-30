@@ -109,6 +109,7 @@ pipeline {
 
                 }
                 if (env.BRANCH_NAME == 'pre-prod') {
+                      sh 'pwd'
                       sh "git add ."
                       sh "git commit -m 'Commit message'"
                       sh "git push origin ${env.BRANCH_NAME}"
