@@ -96,7 +96,7 @@ pipeline {
         always {
             // Clean workspace here
             cleanWs()
-            sh(script: 'docker rm -vf $(docker ps -a -q)')
+            //sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
         }
@@ -107,6 +107,12 @@ pipeline {
                     build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
                     
 
+                }
+                if (env.BRANCH_NAME == 'pre-prod') {
+                      sh "git add ."
+                      sh "git commit -m 'Commit message'"
+                      sh "git push origin ${env.BRANCH_NAME}"
+                   
                 }
             }
         
