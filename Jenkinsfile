@@ -63,7 +63,10 @@ pipeline {
           }
           steps {
              echo "${params.VERSION}"
-             sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${params.VERSION}" --namespace=staging
+             sh"""cd eks
+             sed -i 's/$VERSION_TAG/"${params.VERSION}"/g' weatherapp.yaml
+             kubectl apply -f weatherapp.yaml --namespace=staging
+             kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
 
           }
