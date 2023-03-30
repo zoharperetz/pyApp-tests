@@ -62,6 +62,7 @@ pipeline {
             branch "pre-prod"
           }
           steps {
+             echo "version is:"
              echo "${VERSION_TAG}"
              sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${VERSION_TAG}" --namespace=staging
              """
