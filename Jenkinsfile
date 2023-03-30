@@ -10,6 +10,9 @@ pipeline {
     }
     stages{
       stage('versioning') {
+        when {
+           branch "development"
+        }
         steps {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
@@ -87,12 +90,18 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
-                    sh"""git checkout pre-prod
-                    git cherry-pick ${GIT_COMMIT}
-                    git tag ${VERSION_TAG}
-                    git push origin --tags
-                    git push origin pre-prod
-                    """
+                    properties([
+          
+                      pipelineTriggers([
+                      [
+                        $class: 'jenkins.triggers.ReverseBuildTrigger',
+                        upstreamProjects: 'myorg/myrepo/development',
+                        threshold: hudson.model.Result.SUCCESS
+                      ]
+                    ]),
+                    [$class: 'StringParameterValue', name: 'VERSION', value: ${VERSION_TAG}]
+                   ])
+
                 }
             }
         }
