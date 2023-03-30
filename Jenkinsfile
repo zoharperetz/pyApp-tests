@@ -63,11 +63,12 @@ pipeline {
           }
           steps {
              withEnv(['VERSION=${params.VERSION}']) {
-               build job: 'myorg/myrepo/staging', parameters: [
+               build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", parameters: [
                string(name: 'VERSION', value: "${params.VERSION}")
                ]
              }
              echo "${VERSION}"
+             echo "${env.VERSION}"
              sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${VERSION}" --namespace=staging
              """
 
@@ -94,6 +95,16 @@ pipeline {
             """
         }
         
+        success {
+            script {
+                if (env.BRANCH_NAME == 'development') {
+                    build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
+                    
+
+                }
+            }
+        
+        }
     }
     
 }
