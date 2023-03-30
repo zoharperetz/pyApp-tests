@@ -95,7 +95,7 @@ pipeline {
    post {
         always {
             // Clean workspace here
-            cleanWs()
+            //cleanWs()
             //sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
