@@ -71,7 +71,7 @@ pipeline {
              kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
              }
-             externalIP = sh(returnStdout: true, script: "kubectl get svc my-loadbalancer-service -o=jsonpath='{.status.loadBalancer.ingress[0].ip}'").trim()
+             externalIP = sh(returnStdout: true, script: "kubectl get svc weatherapp-service -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'").trim()
              echo "External IP: ${externalIP}"
              sh"""sed -i 's#http://127.0.0.1:5000#http://${externalIP}#g' testSelenium.py
              cat testSelenium.py
