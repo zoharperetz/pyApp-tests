@@ -26,7 +26,7 @@ pipeline {
                VERSION_TAG=${BUILD_NUMBER}
                echo "${VERSION_TAG}"
              }
-             sh"""           docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
+             sh"""docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
              """
            }
         }
@@ -70,7 +70,11 @@ pipeline {
              kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
              }
-
+             app_url=sh(script: 'kubectl get service weatherapp-service -n staging -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'', returnStdout: true).trim()
+             sh"""sed -i 's#http://127.0.0.1:5000#http://${app_url}#g' testSelenium.py
+             cat testSelenium.py
+             python3 testSelenium.py
+             """
           }
             
       }
