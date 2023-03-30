@@ -14,7 +14,7 @@ class TestWeatherApp(unittest.TestCase):
         options.add_argument('--disable-gpu')
         options.binary_location = '/usr/bin/google-chrome-stable'
         self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, executable_path='/usr/local/bin/chromedriver')
-        self.driver.get("http://localhost:5000")
+        self.driver.get("http://127.0.0.1:5000")
 
     def tearDown(self):
         self.driver.quit()
