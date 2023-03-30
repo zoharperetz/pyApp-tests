@@ -62,14 +62,8 @@ pipeline {
             branch "pre-prod"
           }
           steps {
-             withEnv(['VERSION=${params.VERSION}']) {
-               build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", parameters: [
-               string(name: 'VERSION', value: "${params.VERSION}")
-               ]
-             }
-             echo "${VERSION}"
-             echo "${env.VERSION}"
-             sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${VERSION}" --namespace=staging
+             echo "${params.VERSION}"
+             sh"""kubectl run weather-app --image="${ECR_URI}/${REPO_NAME}:${params.VERSION}" --namespace=staging
              """
 
           }
