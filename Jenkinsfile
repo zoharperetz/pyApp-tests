@@ -138,7 +138,7 @@ pipeline {
                       //sh "git checkout ${env.BRANCH_NAME}"
                       sh "git add ."
                       sh "git commit -m 'Commit message'"
-                      sh "git push origin ${env.BRANCH_NAME}"
+                      //sh "git push origin ${env.BRANCH_NAME}"
                    }
                 }
             }
