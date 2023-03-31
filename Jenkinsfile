@@ -103,10 +103,11 @@ pipeline {
              }
              externalIP = sh(returnStdout: true, script: "kubectl get svc weatherapp-service -n staging -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'").trim()
              echo "External IP: ${externalIP}"
-             sh'''sed -i 's#http://127.0.0.1:5000#http://"${externalIP}"#g' testSelenium.py
+             sh"""
+             sed -i 's#http://127.0.0.1:5000#http://${externalIP}#g' testSelenium.py
              cat testSelenium.py
              python3 testSelenium.py
-             '''
+             """
             }
           }
             
