@@ -101,11 +101,15 @@ pipeline {
 
                 }
                 if (env.BRANCH_NAME == 'pre-prod') {
+                      withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+    // some block
+
+                      
                       sh "git checkout ${env.BRANCH_NAME}"
                       sh "git add ."
                       sh "git commit -m 'Commit message'"
                       sh "git push origin ${env.BRANCH_NAME}"
-                   
+                   }
                 }
             }
         
