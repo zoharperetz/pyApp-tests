@@ -97,8 +97,8 @@ pipeline {
              dir('eks') {
              sh"""sed -i 's/VERSION_TAG/${params.VERSION}/g' weatherapp.yaml
              cat weatherapp.yaml
-             kubectl apply -f weatherapp.yaml --namespace=staging
-             kubectl apply -f weatherapp-service.yaml --namespace=staging
+             //kubectl apply -f weatherapp.yaml --namespace=staging
+             //kubectl apply -f weatherapp-service.yaml --namespace=staging
              """
              }
              externalIP = sh(returnStdout: true, script: "kubectl get svc weatherapp-service -n staging -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'").trim()
