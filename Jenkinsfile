@@ -33,11 +33,11 @@ pipeline {
             branch "development"
          }
          steps {
-             sh """docker build -t "${ECR_URI}/${REPO_NAME}" .
+             sh '''docker build -t "${ECR_URI}/${REPO_NAME}" .
              docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
-             """
+             '''
           
          }
       }
@@ -103,10 +103,10 @@ pipeline {
              }
              externalIP = sh(returnStdout: true, script: "kubectl get svc weatherapp-service -n staging -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'").trim()
              echo "External IP: ${externalIP}"
-             sh"""sed -i 's#http://127.0.0.1:5000#http://${externalIP}#g' testSelenium.py
+             sh'''sed -i 's#http://127.0.0.1:5000#http://${externalIP}#g' testSelenium.py
              cat testSelenium.py
              python3 testSelenium.py
-             """
+             '''
             }
           }
             
