@@ -10,9 +10,6 @@ pipeline {
     }
     stages{
       stage('versioning') {
-        when {
-            branch "development"
-        }
         steps {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
@@ -56,6 +53,38 @@ pipeline {
              
        }
     }
+    stage('update version') {
+        when {
+            branch "development"
+        }
+        steps {
+           dir('eks') {
+             sh"""sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml
+             cat weatherapp.yaml
+             
+       }
+    }
+       stage('push changes') {
+          when {
+            branch "development"
+        }
+          steps {
+            withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+    // some block
+
+                      
+                   //sh "git checkout ${env.BRANCH_NAME}"
+                   sh "git add ."
+                   sh "git commit -m 'Commit message'"
+                   sh "git tag ${VERSION_TAG}"
+                   sh "git checkout pre-prod"
+                   sh "git merge development"
+                   sh "git push origin pre-prod --tags"
+                   sh "git push origin pre-prod"
+             }
+          
+          }
+       }
        
        stage('staging-tests') {
           when {
@@ -63,6 +92,7 @@ pipeline {
           }
           steps {
             script{
+             echo "${VERSION_TAG}"
              echo "${params.VERSION}"
              dir('eks') {
              sh"""sed -i 's/VERSION_TAG/${params.VERSION}/g' weatherapp.yaml
@@ -96,7 +126,7 @@ pipeline {
         success {
             script {
                 if (env.BRANCH_NAME == 'development') {
-                    build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters: [string(name: 'VERSION', value: "${VERSION_TAG}")]
+                    //build job: "${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters:[string(name: 'VERSION', value: "${VERSION_TAG}")]
                     
 
                 }
