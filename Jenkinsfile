@@ -79,12 +79,37 @@ pipeline {
         }
         steps {
           script{
-            echo "heloo"
+             withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+                   currentBuild.rawBuild.pipeline.disableResume()
+                   sh 'git stash'
+                   sh 'git checkout development'
+                   sh 'git stash pop'
+                   sh 'git add .'
+                   sh 'git commit -m "Commit message from jenkins"'
+                   sh 'git push origin development'
+                   
+            }
            }
         }
       }
+      stage('merge to staging') {
+         when {
+            branch "development"
+        }
+         steps{
+            withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+                   currentBuild.rawBuild.pipeline.disableResume()
+                   sh 'git checkout pre-prod'
+                   sh 'git merge development'
+                   sh 'git tag "${VERSION_TAG}"'
+                   sh 'git push --tags' 
+                   sh 'git push origin pre-prod'
+              }
+         
+         }
+      }
       
-      stage('deploy') {
+      stage('deploy to prod repo') {
           when {
             branch "main"
           }
@@ -99,30 +124,12 @@ pipeline {
       
         always {
             // Clean workspace here
-            //cleanWs()
+            cleanWs()
             sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
         }
-         success {
-            script {
-                if (env.BRANCH_NAME == 'development') {
-                   withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-                   currentBuild.rawBuild.pipeline.disableResume()
-                   sh 'git add .'
-                   sh 'git commit -m "Commit message from jenkins"'
-                   sh 'git checkout development'
-                   sh 'git push origin development'
-                   sh 'git checkout pre-prod'
-                   sh 'git merge development'
-                   sh 'git tag "${VERSION_TAG}"'
-                   sh 'git push --tags' 
-                   sh 'git push origin pre-prod'
-            }
-                   
-                }
-           }
-        }
+        
     }
     
 }
