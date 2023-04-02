@@ -129,6 +129,7 @@ pipeline {
                 sh 'git fetch prod-repo'
                 sh 'git stash'
                 sh 'git checkout --track origin/development'
+                sh 'git pull prod-repo main'
                 sh 'git stash pop'
                 sh 'git add .'
                 sh 'git commit -m "Commit message from jenkins"'
