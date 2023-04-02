@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: weatherapp
-        image: 872444258103.dkr.ecr.us-east-1.amazonaws.com/python-app:VERSION_TAG
+        image: 872444258103.dkr.ecr.us-east-1.amazonaws.com/python-app:v1.0.3213
         ports:
         - containerPort: 5000
         
