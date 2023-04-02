@@ -109,9 +109,13 @@ pipeline {
         }
       }
       stage('Disable Jenkins pipeline') {
-         def parentBuild = getParentBuild()
-         parentBuild.pipeline.disableResume()
-  }
+        steps{
+          script{
+             def parentBuild = getParentBuild()
+             parentBuild.pipeline.disableResume()
+           }
+         }
+     }
       stage('deploy to prod repo') {
           when {
             branch "main"
