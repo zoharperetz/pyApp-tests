@@ -62,6 +62,7 @@ pipeline {
              echo "${VERSION_TAG}"
              //sh(script: "sed -i 's/VERSION_TAG/\${VERSION_TAG}/g' weatherapp.yaml")
              sh "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml"
+             writeFile (file: 'weatherapp.yaml', text: ${VERSION_TAG})
              sh "cat weatherapp.yaml"
              
              
