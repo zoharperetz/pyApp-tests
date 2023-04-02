@@ -108,11 +108,16 @@ pipeline {
             script {
                 if (env.BRANCH_NAME == 'development') {
                    withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-
-                   sh 'git checkout development'
+                   currentBuild.rawBuild.pipeline.disableResume()
                    sh 'git add .'
                    sh 'git commit -m "Commit message from jenkins"'
+                   sh 'git checkout development'
                    sh 'git push origin development'
+                   sh 'git checkout pre-prod'
+                   sh 'git merge development'
+                   sh 'git tag "${VERSION_TAG}"'
+                   sh 'git push --tags 
+                   sh 'git push origin pre-prod'
             }
                    
                 }
