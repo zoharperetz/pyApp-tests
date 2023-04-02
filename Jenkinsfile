@@ -23,8 +23,6 @@ pipeline {
                VERSION_TAG=${BUILD_NUMBER}
                echo "${VERSION_TAG}"
              }
-             sh"""docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
-             """
            }
         }
      }
@@ -37,6 +35,7 @@ pipeline {
              docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
+             docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
              '''
           
          }
@@ -53,64 +52,7 @@ pipeline {
              
        }
     }
-    stage('update version') {
-        when {
-            branch "development"
-        }
-        steps {
-           dir('eks') {
-             sh"""sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml
-             cat weatherapp.yaml
-             
-       }
-    }
-       stage('push changes') {
-          when {
-            branch "development"
-        }
-          steps {
-            withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-    // some block
-
-                      
-                   //sh "git checkout ${env.BRANCH_NAME}"
-                   sh "git add ."
-                   sh "git commit -m 'Commit message'"
-                   sh "git tag ${VERSION_TAG}"
-                   sh "git checkout pre-prod"
-                   sh "git merge development"
-                   sh "git push origin pre-prod --tags"
-                   sh "git push origin pre-prod"
-             }
-          
-          }
-       }
-       
-       stage('staging-tests') {
-          when {
-            branch "pre-prod"
-          }
-          steps {
-            script{
-             echo "${VERSION_TAG}"
-             echo "${params.VERSION}"
-             dir('eks') {
-             sh"""sed -i 's/VERSION_TAG/${params.VERSION}/g' weatherapp.yaml
-             cat weatherapp.yaml
-             //kubectl apply -f weatherapp.yaml --namespace=staging
-             //kubectl apply -f weatherapp-service.yaml --namespace=staging
-             """
-             }
-             externalIP = sh(returnStdout: true, script: "kubectl get svc weatherapp-service -n staging -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'").trim()
-             echo "External IP: ${externalIP}"
-             sh"""sed -i 's#http://127.0.0.1:5000#http://\${externalIP}#g' testSelenium.py
-             cat testSelenium.py
-             python3 testSelenium.py
-             """
-            }
-          }
-            
-      }
+   
       stage('deploy') {
           when {
             branch "main"
@@ -123,22 +65,7 @@ pipeline {
        
    }
    post {        
-        success {
-            script {
-                if (env.BRANCH_NAME == 'development') {
-                    build job: "\${env.JOB_NAME.split('/')[0]}/pre-prod", wait: true, parameters:[string(name: 'VERSION', value: "\${VERSION_TAG}")]
-                    
-
-                }
-                if (env.BRANCH_NAME == 'pre-prod') {
-                      withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-    // some block
-                      
-                   }
-                }
-            }
-        
-        }
+      
         always {
             // Clean workspace here
             //cleanWs()
