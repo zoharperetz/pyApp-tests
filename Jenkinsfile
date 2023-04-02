@@ -31,13 +31,13 @@ pipeline {
             branch "development"
          }
          steps {
-             sh '''docker build -t "${ECR_URI}/${REPO_NAME}" .
-             docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
-             docker exec -dit weather-app bash python3 testApp.py
-             python3 testSelenium.py
+             sh 'docker build -t "${ECR_URI}/${REPO_NAME}" .'
+             sh 'docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"'
+             sh 'docker exec -dit weather-app bash python3 testApp.py'
+             sh 'python3 testSelenium.py'
              echo "${VERSION_TAG}"
-             docker tag "${ECR_URI}"/"${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
-             '''
+             sh 'docker tag "${ECR_URI}"/"${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"'
+
           
          }
       }
