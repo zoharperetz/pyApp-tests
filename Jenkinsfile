@@ -128,7 +128,7 @@ pipeline {
                 sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
                 sh 'git fetch prod-repo'
                 sh 'git stash'
-                sh 'git checkout development'
+                sh 'git checkout --track origin/development'
                 sh 'git stash pop'
                 sh 'git add .'
                 sh 'git commit -m "Commit message from jenkins"'
