@@ -2,9 +2,6 @@ pipeline {
     agent {
       label 'build-agent' 
    }
-    options {
-        skipDefaultCheckout()
-    }
     environment{
         REPO_NAME='python-app'
         ECR_URI='872444258103.dkr.ecr.us-east-1.amazonaws.com'
@@ -82,13 +79,7 @@ pipeline {
         }
         steps {
           script{
-            withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-
-               sh 'git checkout development'
-               sh 'git add .'
-               sh 'git commit -m "Commit message from jenkins"'
-               sh 'git push origin development'
-            }
+            echo "heloo"
            }
         }
       }
@@ -108,10 +99,24 @@ pipeline {
       
         always {
             // Clean workspace here
-            cleanWs()
+            //cleanWs()
             sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
+        }
+         success {
+            script {
+                if (env.BRANCH_NAME == 'development') {
+                   withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+
+                   sh 'git checkout development'
+                   sh 'git add .'
+                   sh 'git commit -m "Commit message from jenkins"'
+                   sh 'git push origin development'
+            }
+                   
+                }
+           }
         }
     }
     
