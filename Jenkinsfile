@@ -11,7 +11,8 @@ pipeline {
     stages{
       stage('get version') {
         steps {
-          script{
+          script{            
+            cleanWs()
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
             if (status_code == 0){
             
@@ -76,7 +77,7 @@ pipeline {
         steps {
           script{
             branch_name=sh(script: 'git branch', returnStdout: true)
-            echo "${branch_name}"
+            sh 'git checkout branch development'
             sh 'git add .'
             sh 'git commit -m "Commit message from jenkins"'
             sh 'git push origin development'
@@ -99,7 +100,7 @@ pipeline {
       
         always {
             // Clean workspace here
-            //cleanWs()
+            cleanWs()
             sh(script: 'docker rm -vf $(docker ps -a -q)')
             sh"""docker system prune --force
             """
