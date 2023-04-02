@@ -62,8 +62,8 @@ pipeline {
              echo "${VERSION_TAG}"
              //sh(script: "sed -i 's/VERSION_TAG/\${VERSION_TAG}/g' weatherapp.yaml")
              sh "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml"
-             def configFile = readFile('config.xml')
-             def updatedAppFile = configFile.replaceAll('VERSION_TAG', "${VERSION_TAG}")
+             configFile = readFile('config.xml')
+             updatedAppFile = configFile.replaceAll('VERSION_TAG', "${VERSION_TAG}")
              writeFile(file: 'weatherapp.yaml', text: updatedAppFile)
              sh "cat weatherapp.yaml"
              
