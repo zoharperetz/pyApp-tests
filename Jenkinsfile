@@ -60,7 +60,7 @@ pipeline {
         steps {
            dir('eks') {
              echo "${VERSION_TAG}"
-             sh(script: "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml")
+             sh(script: "sed -i 's/VERSION_TAG/\${VERSION_TAG}/g' weatherapp.yaml")
              //sh "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml"
              sh "cat weatherapp.yaml"
              
