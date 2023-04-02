@@ -31,13 +31,12 @@ pipeline {
             branch "development"
          }
          steps {
-             //sh(script: 'docker rm -vf $(docker ps -a -q)')
              echo "${VERSION_TAG}"
              sh '''docker build -t "${ECR_URI}/${REPO_NAME}" .
              docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
-             docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
+             docker tag "${ECR_URI}/${REPO_NAME}" "${ECR_URI}/${REPO_NAME}: ${VERSION_TAG}"
              '''
           
          }
