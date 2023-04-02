@@ -1,7 +1,10 @@
 pipeline {
     agent {
-  label 'build-agent'
-}
+      label 'build-agent' 
+   }
+    options {
+        skipDefaultCheckout()
+    }
     environment{
         REPO_NAME='python-app'
         ECR_URI='872444258103.dkr.ecr.us-east-1.amazonaws.com'
