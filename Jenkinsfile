@@ -36,7 +36,7 @@ pipeline {
              docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"
              docker exec -dit weather-app bash python3 testApp.py
              python3 testSelenium.py
-             docker tag "${ECR_URI}"/"${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:${VERSION_TAG}"
+             docker tag "${ECR_URI}"/"${REPO_NAME}" "${ECR_URI}/${REPO_NAME}:'${VERSION_TAG}'"
              '''
           
          }
