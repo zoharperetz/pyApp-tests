@@ -80,7 +80,7 @@ pipeline {
         steps {
           script{
              withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-                   currentBuild.rawBuild.pipeline.disableResume()
+                   currentBuild.rawBuild.pipeline.disableResume("")
                    sh 'git stash'
                    sh 'git checkout development'
                    sh 'git stash pop'
@@ -98,7 +98,7 @@ pipeline {
         }
          steps{
             withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-                   currentBuild.rawBuild.pipeline.disableResume()
+                   currentBuild.rawBuild.pipeline.disableResume("")
                    sh 'git checkout pre-prod'
                    sh 'git merge development'
                    sh 'git tag "${VERSION_TAG}"'
