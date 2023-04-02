@@ -83,18 +83,21 @@ pipeline {
         steps {
           script{
              withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
-                   currentBuild.rawBuild.pipeline.disableResume()
+                   //currentBuild.rawBuild.pipeline.disableResume()
                    sh 'git stash'
                    sh 'git checkout development'
                    sh 'git stash pop'
                    sh 'git add .'
                    sh 'git commit -m "Commit message from jenkins"'
                    sh 'git push origin development'
-                   sh 'git checkout pre-prod'
-                   sh 'git merge development'
-                   sh 'git tag "${VERSION_TAG}"'
-                   sh 'git push --tags' 
-                   sh 'git push origin pre-prod'
+                   
+                   def parentBuild = currentBuild.rawBuild.getParent()
+                   parentBuild.pipeline.disableResume()
+                   //sh 'git checkout pre-prod'
+                   //sh 'git merge development'
+                   //sh 'git tag "${VERSION_TAG}"'
+                   //sh 'git push --tags' 
+                   //sh 'git push origin pre-prod'
                    
             }
            }
