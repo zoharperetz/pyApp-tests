@@ -60,15 +60,26 @@ pipeline {
         steps {
            dir('eks') {
              echo "${VERSION_TAG}"
-             sh(script: 'sed -i \'s/VERSION_TAG/${VERSION_TAG}/g\' weatherapp.yaml')
-             //sh """sed -i 's/VERSION_TAG/{VERSION_TAG}/g' weatherapp.yaml
-             sh "cat weatherapp.yaml"
+             //sh(script: "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml")
+             sh """sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml
+             cat weatherapp.yaml
+             """
              
              
          }
         }
      }
-     
+      stage('push changes') {
+        when {
+            branch "development"
+        }
+        steps {
+            sh 'git add .'
+            sh 'git commit -m "Commit message from jenkins"'
+            sh 'git push origin development'
+        }
+      }
+      
       stage('deploy') {
           when {
             branch "main"
