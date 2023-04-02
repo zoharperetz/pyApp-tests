@@ -128,7 +128,6 @@ pipeline {
                 sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
                 sh 'git fetch prod-repo'
                 sh 'git checkout --track origin/development'
-                sh 'git merge prod-repo/main'
                 sh 'git push prod-repo development:main'
              }
          }
