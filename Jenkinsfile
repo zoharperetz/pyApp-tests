@@ -36,7 +36,7 @@ pipeline {
              sh 'docker exec -dit weather-app bash python3 testApp.py'
              sh 'python3 testSelenium.py'
              echo "${VERSION_TAG}"
-             sh 'echo ${VERSION_TAG}'
+             sh 'echo VERSION_TAG'
              sh 'docker tag "${ECR_URI}"/"${REPO_NAME}" "${ECR_URI}"/"${REPO_NAME}":"${VERSION_TAG}"'
             
           
