@@ -31,7 +31,6 @@ pipeline {
             branch "development"
          }
          steps {
-             echo "$(docker ps -a -q)"
              sh(script: 'docker rm -vf $(docker ps -a -q)')
              echo "${VERSION_TAG}"
              sh '''docker build -t "${ECR_URI}/${REPO_NAME}" .
