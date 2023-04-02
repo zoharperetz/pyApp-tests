@@ -12,7 +12,6 @@ pipeline {
       stage('get version') {
         steps {
           script{            
-            cleanWs()
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
             if (status_code == 0){
             
