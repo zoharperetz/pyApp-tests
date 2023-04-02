@@ -116,7 +116,7 @@ pipeline {
                    sh 'git checkout pre-prod'
                    sh 'git merge development'
                    sh 'git tag "${VERSION_TAG}"'
-                   sh 'git push --tags 
+                   sh 'git push --tags' 
                    sh 'git push origin pre-prod'
             }
                    
