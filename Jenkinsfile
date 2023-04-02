@@ -1,3 +1,8 @@
+@NonCPS
+def getParentBuild() {
+  return currentBuild.rawBuild.getParent()
+}
+
 pipeline {
     agent {
       label 'build-agent' 
@@ -91,8 +96,8 @@ pipeline {
                    sh 'git commit -m "Commit message from jenkins"'
                    sh 'git push origin development'
                    
-                   def parentBuild = currentBuild.rawBuild.getParent()
-                   parentBuild.pipeline.disableResume()
+                   //def parentBuild = currentBuild.rawBuild.getParent()
+                   //parentBuild.pipeline.disableResume()
                    //sh 'git checkout pre-prod'
                    //sh 'git merge development'
                    //sh 'git tag "${VERSION_TAG}"'
@@ -103,7 +108,10 @@ pipeline {
            }
         }
       }
-     
+      stage('Disable Jenkins pipeline') {
+         def parentBuild = getParentBuild()
+         parentBuild.pipeline.disableResume()
+  }
       stage('deploy to prod repo') {
           when {
             branch "main"
