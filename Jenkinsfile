@@ -83,7 +83,7 @@ pipeline {
      }
       stage('push changes') {
         when {
-            branch "development"
+            branch "pre-prod"
         }
         steps {
           script{
@@ -109,6 +109,9 @@ pipeline {
         }
       }
       stage('Disable Jenkins pipeline') {
+        when {
+            branch "pre-prod"
+        }
         steps{
           script{
              def parentBuild = getParentBuild()
@@ -118,11 +121,19 @@ pipeline {
      }
       stage('deploy to prod repo') {
           when {
-            branch "main"
+            branch "development"
           }
           steps {
-             echo "hello from main"
-          
+             withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
+                sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
+                sh 'git fetch prod-repo'
+                sh 'git stash'
+                sh 'git checkout development'
+                sh 'git stash pop'
+                sh 'git add .'
+                sh 'git commit -m "Commit message from jenkins"'
+                sh 'git push prod-repo'
+             }
          }
       }
        
