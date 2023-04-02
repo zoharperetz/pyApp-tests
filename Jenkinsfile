@@ -9,7 +9,7 @@ pipeline {
 
     }
     stages{
-      stage('versioning') {
+      stage('get version') {
         steps {
           script{
             status_code=sh(script: 'git tag --contains HEAD', returnStatus: true)
@@ -35,8 +35,6 @@ pipeline {
              sh 'docker run -dit -p 5000:5000 --name weather-app "${ECR_URI}/${REPO_NAME}"'
              sh 'docker exec -dit weather-app bash python3 testApp.py'
              sh 'python3 testSelenium.py'
-             echo "${VERSION_TAG}"
-             sh "echo ${VERSION_TAG}"
              sh "docker tag \"${ECR_URI}/${REPO_NAME}\" \"${ECR_URI}/${REPO_NAME}:${VERSION_TAG}\""
 
             
@@ -55,7 +53,19 @@ pipeline {
              
        }
     }
-   
+     stage('update version') {
+        when {
+            branch "development"
+        }
+        steps {
+           dir('eks') {
+             sh"""sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml
+             cat weatherapp.yaml
+             """
+         }
+        }
+     }
+     
       stage('deploy') {
           when {
             branch "main"
