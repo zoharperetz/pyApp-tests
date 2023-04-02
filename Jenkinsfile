@@ -74,6 +74,8 @@ pipeline {
             branch "development"
         }
         steps {
+            branch_name=sh(script: 'git branch', returnStdout: true)
+            echo "${branch_name}"
             sh 'git add .'
             sh 'git commit -m "Commit message from jenkins"'
             sh 'git push origin development'
