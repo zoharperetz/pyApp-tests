@@ -58,17 +58,18 @@ pipeline {
             branch "development"
         }
         steps {
+          script{
            dir('eks') {
              echo "${VERSION_TAG}"
              //sh(script: "sed -i 's/VERSION_TAG/\${VERSION_TAG}/g' weatherapp.yaml")
              sh "sed -i 's/VERSION_TAG/${VERSION_TAG}/g' weatherapp.yaml"
-             configFile = readFile('config.xml')
+             configFile = readFile('weatherapp.yaml')
              updatedAppFile = configFile.replaceAll('VERSION_TAG', "${VERSION_TAG}")
              writeFile(file: 'weatherapp.yaml', text: updatedAppFile)
              sh "cat weatherapp.yaml"
              
              
-             
+             }
          }
         }
      }
