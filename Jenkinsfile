@@ -126,7 +126,7 @@ pipeline {
              withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
                 sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
                 sh 'git stash'
-                sh 'git fetch prod-repo'
+                sh 'git pull prod-repo'
                 sh 'git checkout --track origin/development'
                 sh 'git merge prod-repo/development'
                 sh 'git stash pop'
