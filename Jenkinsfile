@@ -97,7 +97,6 @@ pipeline {
                    sh 'git push origin development'
                    
                    //def parentBuild = currentBuild.rawBuild.getParent()
-                   //parentBuild.pipeline.disableResume()
                    //sh 'git checkout pre-prod'
                    //sh 'git merge development'
                    //sh 'git tag "${VERSION_TAG}"'
