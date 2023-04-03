@@ -130,7 +130,7 @@ pipeline {
                 sh 'git stash'
                 sh 'git checkout --track origin/development'
                 sh 'git stash pop'
-                sh 'git add /eks'
+                sh 'git add .'
                 sh 'git commit -m "Commit message from jenkins"'
                 sh 'git push prod-repo development:main'
                 
