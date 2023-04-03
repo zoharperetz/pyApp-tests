@@ -125,9 +125,10 @@ pipeline {
           steps {
              withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
                 sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
-                sh 'git fetch prod-repo'
                 sh 'git stash'
+                sh 'git fetch prod-repo'
                 sh 'git checkout --track origin/development'
+                sh 'git merge prod-repo/development'
                 sh 'git stash pop'
                 sh 'git add .'
                 sh 'git commit -m "Commit message from jenkins"'
