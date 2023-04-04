@@ -126,13 +126,11 @@ pipeline {
              withCredentials([gitUsernamePassword(credentialsId: 'github-token', gitToolName: 'Default')]) {
                 sh 'git remote add prod-repo https://github.com/zoharperetz/prod.git'
                 sh 'git stash'
-                sh 'git pull prod-repo'
                 sh 'git checkout --track origin/development'
-                sh 'git merge prod-repo/development'
                 sh 'git stash pop'
-                sh 'git add .'
+                sh 'git add eks/'
                 sh 'git commit -m "Commit message from jenkins"'
-                sh 'git push prod-repo'
+                sh 'git push prod-repo development:main'
                 
              }
          }
