@@ -5,6 +5,7 @@ jobs:
     docker:
       - image: circleci/python
     steps:
+      - setup_remote_docker
       - checkout
       - run:
           name: Build Docker Image
