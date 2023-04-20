@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker build -u root -t myimage:latest .
+            docker build -t myimage:latest .
   test:
     docker:
       - image: myimage:latest
