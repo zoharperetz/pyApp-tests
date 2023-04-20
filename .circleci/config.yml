@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker version
+            sudo systemctl start docker
             docker build -t myimage:latest .
   test:
     docker:
