@@ -15,13 +15,13 @@ jobs:
           name: Run & Test
           command: |
             docker run -dit --name=myapp myimage:latest 
-            docker exec myapp python testApp.py
+            docker exec myapp python testApp.py > test-results.txt
       - store_test_results:
-          path: test-results.xml
+          path: test-results.txt
       - run:
           name: Send Test Results to Discord
           command: |
-            cat test-results.xml
+            cat test-results.txt
  
  
 
