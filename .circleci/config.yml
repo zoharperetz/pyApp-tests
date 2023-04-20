@@ -16,8 +16,7 @@ jobs:
       - docker/build:
           context: .
           dockerfile: Dockerfile
-          tags:
-            - my-image:latest
+          image: my-image:latest
           # Add any additional arguments to the docker build command
           args: []
       # Publish the Docker image to a Docker registry (optional)
