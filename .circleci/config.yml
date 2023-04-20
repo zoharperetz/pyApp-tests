@@ -4,8 +4,6 @@ jobs:
   build:
     docker:
       - image: docker:20.10.7
-        volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
     steps:
       - checkout
       - run:
