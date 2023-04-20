@@ -12,6 +12,7 @@ jobs:
           command: |
             docker build -t myimage:latest .
             docker run -dit myimage:latest
+            pwd
       - persist_to_workspace:
           root: .
           paths:
