@@ -11,25 +11,16 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t myimage:latest .
-            pwd
-            ls -a
-      - persist_to_workspace:
-          root: .
-          paths:
-            - Dockerfile
-            - myimage.tar
-          when: always
+            docker run -dit --name=myapp myimage:latest 
+            docker exec myapp python testApp.py
   test:
     docker:
       - image: circleci/python
     steps:
       - checkout
-      - attach_workspace:
-          at: .
       - run:
           name: Run Unit Tests
           command: |
-            docker load -i /home/circleci/project/myimage.tar
             docker run -dit myimage python testApp.py
       - store_test_results:
           path: test-results.xml
