@@ -12,6 +12,7 @@ jobs:
           command: |
             docker build -t myimage:latest .
             docker run -dit myimage:latest
+            ls -a
             python3 testApp.py
   test:
     docker:
