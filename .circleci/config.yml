@@ -16,6 +16,7 @@ jobs:
           command: |
             docker run -dit --name=myapp myimage:latest 
             docker exec myapp python testApp.py > test-results.txt
+            cat test-results.txt
       - store_test_results:
           path: test-results.txt
       - run:
