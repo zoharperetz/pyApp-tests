@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  build:
+  build-test:
     docker:
       - image: circleci/python
     steps:
@@ -11,32 +11,24 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t myimage:latest .
+      - run:
+          name: Run & Test
+          command: |
             docker run -dit --name=myapp myimage:latest 
             docker exec myapp python testApp.py
-  test:
-    docker:
-      - image: circleci/python
-    steps:
-      - checkout
-      - run:
-          name: Run Unit Tests
-          command: |
-            docker run -dit myimage python testApp.py
       - store_test_results:
           path: test-results.xml
       - run:
           name: Send Test Results to Discord
           command: |
             cat test-results.xml
-
-  
+ 
+ 
 
 workflows:
   build-test-deploy:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
+      - build-test
+     
       
 
