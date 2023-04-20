@@ -1,0 +1,27 @@
+version: 2.1
+
+orbs:
+  # Declare a Docker orb that provides pre-built docker images
+  docker: circleci/docker@1.1.0
+
+jobs:
+  build:
+    docker:
+      # Use a pre-built Docker image with Docker and Docker Compose installed
+      - image: circleci/buildpack-deps:20.04
+    steps:
+      # Checkout the code from the GitHub repository
+      - checkout
+      # Build the Docker image using the Dockerfile in the repository
+      - docker/build:
+          context: .
+          dockerfile: Dockerfile
+          tags:
+            - my-image:latest
+          # Add any additional arguments to the docker build command
+          args: []
+      # Publish the Docker image to a Docker registry (optional)
+      - docker/publish:
+          image: my-image:latest
+
+
