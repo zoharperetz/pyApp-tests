@@ -11,6 +11,8 @@ jobs:
           name: Build Docker Image
           command: |
             docker build -t myimage:latest .
+            docker run -dit myimage:latest
+            python3 testApp.py
   test:
     docker:
       - image: myimage:latest
