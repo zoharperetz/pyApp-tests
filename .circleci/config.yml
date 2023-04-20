@@ -1,24 +1,37 @@
 version: 2.1
 
-orbs:
-  # Declare a Docker orb that provides pre-built docker images
-  docker: circleci/docker@1.1.0
-
 jobs:
   build:
     docker:
-      # Use a pre-built Docker image with Docker and Docker Compose installed
-      - image: circleci/buildpack-deps:20.04
+      - image: docker:20.10.7
     steps:
-      # Checkout the code from the GitHub repository
       - checkout
-      # Build the Docker image using the Dockerfile in the repository
-      - docker/build:
-          context: .
-          dockerfile: Dockerfile
-          image: my-image:latest
-      # Publish the Docker image to a Docker registry (optional)
-      - docker/publish:
-          image: my-image:latest
+      - run:
+          name: Build Docker Image
+          command: docker build -t myimage:latest .
+  test:
+    docker:
+      - image: myimage:latest
+    steps:
+      - checkout
+      - run:
+          name: Run Unit Tests
+          command: python -m unitte
+      - store_test_results:
+          path: test-results.xml
+      - run:
+          name: Send Test Results to Discord
+          command: |
+            cat test-results.xml
 
+  
+
+workflows:
+  build-test-deploy:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      
 
