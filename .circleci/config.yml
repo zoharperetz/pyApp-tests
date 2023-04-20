@@ -3,13 +3,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: docker:20.10.7
+      - image: circleci/python:3.8.0-alpine
     steps:
       - checkout
       - run:
           name: Build Docker Image
           command: |
-            docker build -t myimage:latest .
+            docker build -u root -t myimage:latest .
   test:
     docker:
       - image: myimage:latest
