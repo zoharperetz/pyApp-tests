@@ -23,7 +23,7 @@ jobs:
       - store_test_results:
           path: test-results.txt
       - run:
-          name: Send Test Results to Discord
+          name: Send Test Results
           command: |
             cat test-results.txt
       - docker-publish/publish:
