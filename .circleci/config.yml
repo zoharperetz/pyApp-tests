@@ -36,7 +36,7 @@ jobs:
       - checkout:
           repository: https://github.com/zoharperetz/prod.git
           path: ~/project/gitops-repo
-      -run:
+      - run:
          name: tests
          command: |
            cd ~/project/gitops-repo
