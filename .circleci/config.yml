@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  docker: circleci/docker@1.2.0
+
 jobs:
   build-test:
     docker:
