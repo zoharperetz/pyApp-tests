@@ -23,7 +23,14 @@ jobs:
           name: Send Test Results to Discord
           command: |
             cat test-results.txt
- 
+     - docker/publish:
+         context: .
+         dockerfile: Dockerfile
+         repository: zoharperets/weatherapp
+         tag: myimage:$CIRCLE_BUILD_NUM
+         username: zoharperets
+         password: $DOCKERHUB_PASS
+
  
 
 workflows:
