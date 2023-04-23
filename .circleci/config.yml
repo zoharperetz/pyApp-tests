@@ -41,6 +41,7 @@ jobs:
          name: tests
          command: |
            cd ~/project/gitops-repo
+           pwd
            ls -a
 
 
