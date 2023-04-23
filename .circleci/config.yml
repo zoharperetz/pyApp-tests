@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  docker: haskell-works/docker-publish@1.0.0
-
 jobs:
   build-test:
     docker:
@@ -26,13 +23,13 @@ jobs:
           name: Send Test Results
           command: |
             cat test-results.txt
-      - docker-publish/publish:
-          context: .
-          dockerfile: Dockerfile
-          repository: zoharperets/weatherapp
-          tag: myimage:$CIRCLE_BUILD_NUM
-          username: zoharperets
-          password: $DOCKERHUB_PASS
+      - run:
+          name: push image
+          command: |
+            docker login -u zoharperets -p $DOCKERHUB_PASS
+            docker tag zoharperets/weatherapp:$CIRCLE_BUILD_NUM zoharperets/weatherapp
+            docker push zoharperets/weatherapp:${CIRCLE_BUILD_NUM}
+         
 
  
 
