@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker-publish@1.0.0
+  docker: haskell-works/docker-publish@1.0.0
 
 jobs:
   build-test:
