@@ -49,6 +49,9 @@ workflows:
   build-test-deploy:
     jobs:
       - build-test
+      - terraform-tests:
+          requires:
+            - build-test
      
       
 
