@@ -34,8 +34,10 @@ jobs:
       - image: hashicorp/terraform:1.0.8
     steps:
       - checkout:
-          repository: https://github.com/zoharperetz/prod.git
           path: ~/project/gitops-repo
+          git:
+            url: https://github.com/zoharperetz/prod.git
+            ref: main
       - run:
          name: tests
          command: |
