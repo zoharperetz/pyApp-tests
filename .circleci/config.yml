@@ -37,7 +37,7 @@ jobs:
       - run:
           name: Clone Repo
           command: |
-            git clone https://github.com/zoharperetz/prod.git
+            git clone https://zoharperetz:$GITHUB_TOKEN@github.com/zoharperetz/prod.git
       - run:
          name: tests
          command: |
