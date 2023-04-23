@@ -37,7 +37,6 @@ jobs:
           path: ~/project/gitops-repo
           git:
             url: https://github.com/zoharperetz/prod.git
-            ref: main
       - run:
          name: tests
          command: |
