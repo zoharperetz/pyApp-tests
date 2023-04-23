@@ -27,8 +27,8 @@ jobs:
           name: push image
           command: |
             docker login -u zoharperets -p $DOCKERHUB_PASS
-            docker tag zoharperets/weatherapp:$CIRCLE_BUILD_NUM zoharperets/weatherapp
-            docker push zoharperets/weatherapp:${CIRCLE_BUILD_NUM}
+            docker tag myimage:latest zoharperets/weatherapp:$CIRCLE_BUILD_NUM
+            docker push zoharperets/weatherapp:$CIRCLE_BUILD_NUM
          
 
  
