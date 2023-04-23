@@ -29,7 +29,19 @@ jobs:
             docker login -u zoharperets -p $DOCKERHUB_PASS
             docker tag myimage:latest zoharperets/weatherapp:$CIRCLE_BUILD_NUM
             docker push zoharperets/weatherapp:$CIRCLE_BUILD_NUM
-         
+  terraform-tests:
+    docker:
+      - image: hashicorp/terraform:1.0.8
+    steps:
+      - checkout:
+          repository: https://github.com/zoharperetz/prod.git
+          path: ~/project/gitops-repo
+      -run:
+         name: tests
+         command: |
+           cd ~/project/gitops-repo
+           ls -a
+
 
  
 
