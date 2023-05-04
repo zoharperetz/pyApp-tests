@@ -62,6 +62,7 @@ jobs:
           name: Run Terratest
           command: |
             cd prod/test
+            export PATH=$PATH:/usr/local/go/bin
             go mod init test_eks
             go mod tidy
             go test -v 
