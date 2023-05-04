@@ -35,6 +35,11 @@ jobs:
       - image: hashicorp/terraform:1.0.8
     steps:
       - run:
+          name: Setup
+          command: |
+            apt-get update 
+            apt-get install -y golang
+      - run:
           name: Clone Repo
           command: |
             git clone https://zoharperetz:$GITHUB_TOKEN@github.com/zoharperetz/prod.git
