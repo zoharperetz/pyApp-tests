@@ -38,13 +38,13 @@ jobs:
           name: Setup
           command: |
             apt update
-            apt install curl
+            apt install -y curl
             curl -fsSL https://golang.org/dl/go1.17.6.linux-amd64.tar.gz -o go.tar.gz
             tar -C /usr/local -xzf go.tar.gz && rm go.tar.gz
             export PATH=$PATH:/usr/local/go/bin
             curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
             apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-            apt update && apt install terraform
+            apt update && apt install -y terraform
       - run:
           name: Clone Repo
           command: |
