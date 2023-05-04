@@ -44,9 +44,9 @@ jobs:
             curl -fsSL https://golang.org/dl/go1.17.6.linux-amd64.tar.gz -o go.tar.gz
             tar -C /usr/local -xzf go.tar.gz && rm go.tar.gz
             export PATH=$PATH:/usr/local/go/bin
-            curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+            yes | curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
             apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-            apt-get update && apt-get install -y terraform
+            yes | apt-get update && apt-get install -y terraform
       - run:
           name: Clone Repo
           command: |
