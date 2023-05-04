@@ -30,42 +30,39 @@ jobs:
             docker tag myimage:latest zoharperets/weatherapp:$CIRCLE_BUILD_NUM
             docker push zoharperets/weatherapp:$CIRCLE_BUILD_NUM
   terraform-tests:
-  docker:
-    - image: ubuntu:latest
-  steps:
-    - run:
-        name: Update apt-get and install dependencies
-        command: |
-          apt-get update
-          apt-get install -y curl unzip
-    - run:
-        name: Install Go
-        command: |
-          curl -O https://dl.google.com/go/go1.16.4.linux-amd64.tar.gz
-          tar -xvf go1.16.4.linux-amd64.tar.gz
-          mv go /usr/local
-          export PATH=$PATH:/usr/local/go/bin
-    - run:
-        name: Install Terraform
-        command: |
-          curl -O https://releases.hashicorp.com/terraform/1.0.3/terraform_1.0.3_linux_amd64.zip
-          unzip terraform_1.0.3_linux_amd64.zip
-          mv terraform /usr/local/bin/
-    - run:
-        name: Clone Repo
-        command: |
-          git clone https://zoharperetz:$GITHUB_TOKEN@github.com/zoharperetz/prod.git
-    - run:
-        name: Run Terratest
-        command: |
-          cd prod/test
-          go mod init test_eks
-          go mod tidy
-          go test -v 
+    docker:
+      - image: ubuntu:latest
+    steps:
+      - run:
+          name: Update apt-get and install dependencies
+          command: |
+            apt-get update
+            apt-get install -y curl unzip
+      - run:
+          name: Install Go
+          command: |
+            curl -O https://dl.google.com/go/go1.16.4.linux-amd64.tar.gz
+            tar -xvf go1.16.4.linux-amd64.tar.gz
+            mv go /usr/local
+            export PATH=$PATH:/usr/local/go/bin
+      - run:
+          name: Install Terraform
+          command: |
+            curl -O https://releases.hashicorp.com/terraform/1.0.3/terraform_1.0.3_linux_amd64.zip
+            unzip terraform_1.0.3_linux_amd64.zip
+            mv terraform /usr/local/bin/
+      - run:
+          name: Clone Repo
+          command: |
+            git clone https://zoharperetz:$GITHUB_TOKEN@github.com/zoharperetz/prod.git
+      - run:
+          name: Run Terratest
+          command: |
+            cd prod/test
+            go mod init test_eks
+            go mod tidy
+            go test -v 
 
-
-
- 
 
 workflows:
   build-test-deploy:
