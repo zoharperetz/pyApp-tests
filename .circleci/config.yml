@@ -32,12 +32,18 @@ jobs:
   terraform-tests:
     working_directory: ~/project/gitops-repo
     docker:
-      - image: appuio/terratest-golang-terraform
+      - image: ubuntu:latest
     steps:
       - run:
           name: Setup
           command: |
-            apk add --no-cache go
+            apt update
+            curl -fsSL https://golang.org/dl/go1.17.6.linux-amd64.tar.gz -o go.tar.gz
+            tar -C /usr/local -xzf go.tar.gz && rm go.tar.gz
+            export PATH=$PATH:/usr/local/go/bin
+            curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
+            apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+            apt update && apt install terraform
       - run:
           name: Clone Repo
           command: |
