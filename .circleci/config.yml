@@ -40,6 +40,7 @@ jobs:
             apt-get update
             apt-get install -y curl
             apt-get update && apt-get install -y gnupg
+            apt-get update && apt-get install -y lsb-release software-properties-common
             curl -fsSL https://golang.org/dl/go1.17.6.linux-amd64.tar.gz -o go.tar.gz
             tar -C /usr/local -xzf go.tar.gz && rm go.tar.gz
             export PATH=$PATH:/usr/local/go/bin
