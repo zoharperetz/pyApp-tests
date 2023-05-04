@@ -37,8 +37,7 @@ jobs:
       - run:
           name: Setup
           command: |
-            curl -fsSL https://golang.org/dl/go1.17.6.linux-amd64.tar.gz -o go.tar.gz
-            tar -C /usr/local -xzf go.tar.gz && rm go.tar.gz
+            apt-get install -y golang
             export PATH=$PATH:/usr/local/go/bin
       - run:
           name: Clone Repo
