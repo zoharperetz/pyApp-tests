@@ -37,8 +37,7 @@ jobs:
       - run:
           name: Setup
           command: |
-            apt-get update 
-            apt-get install -y golang
+            apk add --no-cache go
       - run:
           name: Clone Repo
           command: |
