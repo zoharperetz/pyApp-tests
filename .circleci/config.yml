@@ -38,6 +38,9 @@ jobs:
           command: |
             apt-get update
             apt-get install -y curl unzip
+            apt-get install -y git
+            export PATH=$PATH:/usr/bin/git
+
       - run:
           name: Install Go
           command: |
