@@ -39,10 +39,14 @@ jobs:
           command: |
             git clone https://zoharperetz:$GITHUB_TOKEN@github.com/zoharperetz/prod.git
       - run:
-         name: tests
-         command: |
-           pwd
-           ls -a
+          name: Run Terratest
+          command: |
+            ls -a
+            pwd
+            cd prod/test
+            go mod init test_eks
+            go mod tidy
+            go test -v 
 
 
  
